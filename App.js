@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -12,6 +13,21 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Task from './components/Task';
 
 export default function App() {
+  const [task, setTask] = useState('');
+  const [taskList, setTaskList] = useState(['Walk cat', 'Pet pig']);
+
+  const handleAddTask = () => {
+    Keyboard.dismiss();
+    setTaskList([...taskList, task]);
+    setTask('');
+  };
+
+  const completeTask = (taskIdx) => {
+    let taskListCopy = [...taskList];
+    taskListCopy.splice(taskIdx, 1);
+    setTaskList(taskListCopy);
+  };
+
   return (
     <View style={styles.container}>
       {/* today's tasks */}
@@ -19,8 +35,11 @@ export default function App() {
         <Text style={styles.title}>Today's Tasks</Text>
 
         <View style={styles.tasks}>
-          <Task text='Task 1' />
-          <Task text='Task 2' />
+          {taskList.map((task, index) => (
+            <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+              <Task text={task} />
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
       {/* add task */}
@@ -28,8 +47,13 @@ export default function App() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.rightTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder='Write a task' />
-        <TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder='Write a task'
+          value={task}
+          onChangeText={(text) => setTask(text)}
+        />
+        <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
             <MaterialCommunityIcons name='plus' size={40} color='#683BB7' />
           </View>

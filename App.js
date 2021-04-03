@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -12,9 +13,23 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Task from './components/Task';
 
+const BASE_URL = 'https://rn-todo-list.herokuapp.com';
+
 export default function App() {
-  const [task, setTask] = useState('');
-  const [taskList, setTaskList] = useState(['Walk cat', 'Pet pig']);
+  const [task, setTask] = useState();
+  const [taskList, setTaskList] = useState([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const { data } = await axios.get(`${BASE_URL}/todos`);
+        setTaskList(data);
+      } catch (err) {
+        console.log(`Error: tasks not fetched. ${err.message}`);
+      }
+    };
+    fetchTasks();
+  }, [setTaskList]);
 
   const handleAddTask = () => {
     Keyboard.dismiss();
@@ -22,27 +37,32 @@ export default function App() {
     setTask('');
   };
 
-  const completeTask = (taskIdx) => {
-    let taskListCopy = [...taskList];
-    taskListCopy.splice(taskIdx, 1);
-    setTaskList(taskListCopy);
+  const handleRemoveTask = async (taskId) => {
+    try {
+      await axios.delete(`${BASE_URL}/todos/${taskId}`);
+      setTaskList(taskList.filter((el) => el._id !== taskId));
+    } catch (err) {
+      console.log(`Error: task not deleted. ${err.message}`);
+    }
   };
 
   return (
     <View style={styles.container}>
-      {/* today's tasks */}
       <View style={styles.tasksWrapper}>
-        <Text style={styles.title}>Today's Tasks</Text>
-
+        <Text style={styles.title}>To-Done List</Text>
+        {/* LIST OF TASKS */}
         <View style={styles.tasks}>
-          {taskList.map((task, index) => (
-            <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-              <Task text={task} />
+          {taskList.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              onPress={() => handleRemoveTask(item._id)}
+            >
+              <Task text={item.task} />
             </TouchableOpacity>
           ))}
         </View>
       </View>
-      {/* add task */}
+      {/* ADD TASK */}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.rightTaskWrapper}

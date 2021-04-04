@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import axios from 'axios';
 import Icon from './Icon';
 import { TasksContext } from '../contexts/TasksContext';
 
-function Task({ text }) {
-  //const [task, setTask] = useContext(TasksContext);
+const BASE_URL = 'https://rn-todo-list.herokuapp.com';
+
+export default function Task({ item }) {
+  const { _id, isCompleted, task } = item;
+  const { taskList, setTaskList } = useContext(TasksContext);
 
   const handleDelete = async (taskId) => {
     try {
@@ -15,46 +19,17 @@ function Task({ text }) {
     }
   };
 
-  // toggle isCompleted, change task
-  // preventDefault not needed to toggle isCompleted; change task incl addl funcs inline (below)
-  const handleUpdate = async (e, taskId, updatedInfo) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.patch(`/todos/${taskId}`, updatedInfo);
-      // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
-      const updatedTodos = tasks.map((el) => {
-        if (el._id === taskId) {
-          return data;
-        } else {
-          return el;
-        }
-      });
-      setTaskList(updatedTodos);
-    } catch (err) {
-      console.log(`Error: task not changed. ${err.message}`);
-    }
-  };
-
   return (
-    // <View style={styles.item}>
-    //   <View style={styles.itemLeft}>
-    //     <TouchableOpacity style={styles.square}></TouchableOpacity>
-    //     <Text style={styles.itemText}>{text}</Text>
-    //   </View>
-
-    //   <View style={styles.circular}></View>
-    // </View>
-
     <View style={styles.item}>
       <View style={[styles.contentGroup, { flexWrap: 'wrap' }]}>
         <View style={styles.circular}></View>
-        <Text style={styles.itemText}>{text}</Text>
+        <Text style={styles.itemText}>{task}</Text>
       </View>
 
       <View style={styles.contentGroup}>
         <TouchableOpacity
           onPress={() => {
-            handleDelete(task._id);
+            handleDelete(_id);
           }}
         >
           <Icon name='trash-can-outline' backgroundColor='red' />
@@ -103,5 +78,3 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
 });
-
-export default Task;

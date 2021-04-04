@@ -28,7 +28,7 @@ export default function Main() {
     const fetchTasks = async () => {
       try {
         const { data } = await axios.get(`${BASE_URL}/todos`);
-        console.log(data);
+        // console.log(data);
         setTaskList(data);
       } catch (err) {
         console.log(`Error: tasks not fetched. ${err.message}`);
@@ -59,9 +59,7 @@ export default function Main() {
         {taskList.length && (
           <View style={styles.tasks}>
             {taskList.map((item) => (
-              <TouchableOpacity key={item._id}>
-                <Task text={item.task} />
-              </TouchableOpacity>
+              <Task item={item} key={item._id} />
             ))}
           </View>
         )}

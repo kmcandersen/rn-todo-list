@@ -1,28 +1,91 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from './Icon';
+import { TasksContext } from '../contexts/TasksContext';
 
 function Task({ text }) {
+  //const [task, setTask] = useContext(TasksContext);
+
+  const handleDelete = async (taskId) => {
+    try {
+      await axios.delete(`${BASE_URL}/todos/${taskId}`);
+      setTaskList(taskList.filter((el) => el._id !== taskId));
+    } catch (err) {
+      console.log(`Error: task not deleted. ${err.message}`);
+    }
+  };
+
+  // toggle isCompleted, change task
+  // preventDefault not needed to toggle isCompleted; change task incl addl funcs inline (below)
+  const handleUpdate = async (e, taskId, updatedInfo) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.patch(`/todos/${taskId}`, updatedInfo);
+      // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
+      const updatedTodos = tasks.map((el) => {
+        if (el._id === taskId) {
+          return data;
+        } else {
+          return el;
+        }
+      });
+      setTaskList(updatedTodos);
+    } catch (err) {
+      console.log(`Error: task not changed. ${err.message}`);
+    }
+  };
+
   return (
+    // <View style={styles.item}>
+    //   <View style={styles.itemLeft}>
+    //     <TouchableOpacity style={styles.square}></TouchableOpacity>
+    //     <Text style={styles.itemText}>{text}</Text>
+    //   </View>
+
+    //   <View style={styles.circular}></View>
+    // </View>
+
     <View style={styles.item}>
-      <View style={styles.itemLeft}>
-        <TouchableOpacity style={styles.square}></TouchableOpacity>
+      <View style={[styles.contentGroup, { flexWrap: 'wrap' }]}>
+        <View style={styles.circular}></View>
         <Text style={styles.itemText}>{text}</Text>
       </View>
 
-      <View style={styles.circular}></View>
+      <View style={styles.contentGroup}>
+        <TouchableOpacity
+          onPress={() => {
+            handleDelete(task._id);
+          }}
+        >
+          <Icon name='trash-can-outline' backgroundColor='red' />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setIsEditing(true);
+          }}
+          style={{ marginLeft: 10 }}
+        >
+          <Icon name='pencil-outline' backgroundColor='blue' />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   circular: {
-    width: 12,
-    height: 12,
+    width: 30,
+    height: 30,
     borderColor: '#683BB7',
-    borderWidth: 2,
-    borderRadius: 5,
+    borderWidth: 5,
+    borderRadius: 15,
+    marginRight: 10,
   },
   container: {},
+  contentGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   item: {
     backgroundColor: '#fff',
     padding: 15,
@@ -33,19 +96,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
     flexWrap: 'wrap',
   },
-  square: {
-    backgroundColor: '#683BB7',
-    // backgroundColor: '#9370D1',
-    borderRadius: 5,
-    marginRight: 15,
-    // opacity: 0.4,
-    height: 24,
-    width: 24,
-  },
+
   itemText: {
     maxWidth: '80%',
   },

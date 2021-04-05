@@ -15,11 +15,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import defaultStyles from '../config/styles';
 import Task from '../components/Task';
 
+import { EditContext } from '../contexts/EditContext';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 export default function Main() {
+  const { editItem, setEditItem } = useContext(EditContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
@@ -39,11 +41,13 @@ export default function Main() {
   const handleAddTask = async () => {
     Keyboard.dismiss();
     try {
-      const { data } = await axios.post(`${BASE_URL}/todos`, {
-        task: inputTask,
-      });
-      // add to Context state the new task returned from route
-      setTaskList([...taskList, data]);
+      if (inputTask) {
+        const { data } = await axios.post(`${BASE_URL}/todos`, {
+          task: inputTask,
+        });
+        // add to Context state the new task returned from route
+        setTaskList([...taskList, data]);
+      }
       setInputTask('');
     } catch (err) {
       console.log(`Error: task not added. ${err.message}`);
@@ -76,6 +80,7 @@ export default function Main() {
           // value must be a string, not obj
           value={inputTask}
           onChangeText={(text) => setInputTask(text)}
+          onFocus={() => setEditItem('')}
         />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addButtonWrapper}>

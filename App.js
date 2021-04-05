@@ -1,12 +1,15 @@
 import React from 'react';
 import { TasksProvider } from './contexts/TasksContext';
+import { EditProvider } from './contexts/EditContext';
 import Main from './screens/Main';
 
 function App() {
   return (
-    <TasksProvider>
-      <Main />
-    </TasksProvider>
+    <EditProvider>
+      <TasksProvider>
+        <Main />
+      </TasksProvider>
+    </EditProvider>
   );
 }
 

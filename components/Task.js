@@ -11,6 +11,7 @@ import axios from 'axios';
 import Icon from './Icon';
 import IconOutline from './IconOutline';
 import defaultStyles from '../config/styles';
+import { EditContext } from '../contexts/EditContext';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
@@ -18,9 +19,9 @@ const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 export default function Task({ item }) {
   const { _id, isCompleted, task } = item;
 
+  const { editItem, setEditItem } = useContext(EditContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleDelete = async (taskId) => {
     try {
@@ -34,27 +35,29 @@ export default function Task({ item }) {
   // toggle isCompleted, change task
   // change task incl addl funcs inline (below)
   const handleUpdate = async (taskId, updatedInfo) => {
-    console.log(taskId, updatedInfo);
     try {
-      const { data } = await axios.patch(
-        `${BASE_URL}/todos/${_id}`,
-        updatedInfo
-      );
-      // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
-      const updatedTodos = taskList.map((el) => {
-        if (el._id === _id) {
-          return data;
-        } else {
-          return el;
-        }
-      });
-      setTaskList(updatedTodos);
+      if (updatedInfo.task) {
+        const { data } = await axios.patch(
+          `${BASE_URL}/todos/${_id}`,
+          updatedInfo
+        );
+        // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
+        const updatedTodos = taskList.map((el) => {
+          if (el._id === _id) {
+            return data;
+          } else {
+            return el;
+          }
+        });
+        setTaskList(updatedTodos);
+      }
+      setEditItem('');
     } catch (err) {
       console.log(`Error: task not changed. ${err.message}`);
     }
   };
 
-  if (!isEditing) {
+  if (editItem !== _id) {
     return (
       <View style={styles.item}>
         <View style={[styles.contentGroup, { flexWrap: 'wrap' }]}>
@@ -74,6 +77,7 @@ export default function Task({ item }) {
           <TouchableOpacity
             onPress={() => {
               handleDelete(_id);
+              setEditItem('');
             }}
             style={styles.alignIcons}
           >
@@ -86,7 +90,8 @@ export default function Task({ item }) {
           {!isCompleted && (
             <TouchableOpacity
               onPress={() => {
-                setIsEditing(true);
+                setEditItem('');
+                setEditItem(_id);
               }}
               style={[styles.alignIcons, { marginLeft: 10 }]}
             >
@@ -119,7 +124,7 @@ export default function Task({ item }) {
               onPress={() => {
                 handleUpdate(_id, { task: inputTask });
                 setInputTask('');
-                setIsEditing(false);
+                setEditItem('');
               }}
               style={{ marginLeft: 15 }}
             >

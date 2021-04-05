@@ -121,7 +121,7 @@ export default function Task({ item }) {
                 setInputTask('');
                 setIsEditing(false);
               }}
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 15 }}
             >
               <Icon
                 name='pencil-outline'
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   editInput: {
-    borderColor: '#C0C0C0',
+    borderColor: defaultStyles.border,
     borderRadius: 60,
     borderWidth: 1,
     fontSize: 18,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: '#fff',
+    backgroundColor: defaultStyles.white,
     padding: 15,
     borderRadius: 10,
     fontSize: 18,

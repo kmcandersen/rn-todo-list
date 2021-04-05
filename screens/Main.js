@@ -4,6 +4,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -52,15 +53,17 @@ export default function Main() {
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}>
-        <Text style={styles.title}>To-Done List</Text>
-        {/* LIST OF TASKS */}
-        {taskList.length && (
-          <View style={styles.tasks}>
-            {taskList.map((item) => (
-              <Task item={item} key={item._id} />
-            ))}
-          </View>
-        )}
+        <ScrollView>
+          <Text style={styles.title}>To-Done List</Text>
+          {/* LIST OF TASKS */}
+          {taskList.length && (
+            <View style={styles.tasks}>
+              {taskList.map((item) => (
+                <Task item={item} key={item._id} />
+              ))}
+            </View>
+          )}
+        </ScrollView>
       </View>
       {/* ADD TASK */}
       <KeyboardAvoidingView
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 60,
     height: 60,
+    marginLeft: 20,
   },
   input: {
     backgroundColor: defaultStyles.white,
@@ -108,14 +112,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 15,
     paddingVertical: 15,
-    width: 250,
+    flex: 1,
+    // width: '100%',
     fontSize: 18,
   },
   addTaskWrapper: {
+    backgroundColor: defaultStyles.background,
+    borderTopColor: defaultStyles.border,
+    borderTopWidth: 1,
+    paddingTop: 20,
+    paddingHorizontal: 20,
     position: 'absolute',
     bottom: 60,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    // justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
   },
@@ -128,6 +139,7 @@ const styles = StyleSheet.create({
   },
   tasksWrapper: {
     paddingTop: 80,
+    paddingBottom: 140,
     paddingHorizontal: 20,
   },
 });

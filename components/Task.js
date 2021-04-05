@@ -10,6 +10,7 @@ import {
 import axios from 'axios';
 import Icon from './Icon';
 import IconOutline from './IconOutline';
+import defaultStyles from '../config/styles';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
@@ -62,9 +63,9 @@ export default function Task({ item }) {
             style={{ marginRight: 12 }}
           >
             {isCompleted ? (
-              <Icon name='check' backgroundColor='#683BB7' />
+              <Icon name='check' backgroundColor={defaultStyles.check} />
             ) : (
-              <IconOutline size={30} iconColor='#683BB7' />
+              <IconOutline size={30} iconColor={defaultStyles.check} />
             )}
           </TouchableOpacity>
           <Text style={styles.itemText}>{task}</Text>
@@ -77,9 +78,9 @@ export default function Task({ item }) {
             style={styles.alignIcons}
           >
             <View style={{ position: 'absolute' }}>
-              <Icon name='trash-can-outline' iconColor='red' />
+              <Icon name='trash-can-outline' iconColor={defaultStyles.delete} />
             </View>
-            <IconOutline iconColor='red' />
+            <IconOutline iconColor={defaultStyles.delete} />
           </TouchableOpacity>
 
           {!isCompleted && (
@@ -90,9 +91,9 @@ export default function Task({ item }) {
               style={[styles.alignIcons, { marginLeft: 10 }]}
             >
               <View style={{ position: 'absolute' }}>
-                <Icon name='pencil-outline' iconColor='blue' />
+                <Icon name='pencil-outline' iconColor={defaultStyles.edit} />
               </View>
-              <IconOutline iconColor='blue' />
+              <IconOutline iconColor={defaultStyles.edit} />
             </TouchableOpacity>
           )}
         </View>
@@ -122,7 +123,10 @@ export default function Task({ item }) {
               }}
               style={{ marginLeft: 10 }}
             >
-              <Icon name='pencil-outline' backgroundColor='blue' />
+              <Icon
+                name='pencil-outline'
+                backgroundColor={defaultStyles.edit}
+              />
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -160,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   itemText: {
-    fontSize: 18,
+    fontSize: defaultStyles.itemFontSize,
     maxWidth: '80%',
   },
 });

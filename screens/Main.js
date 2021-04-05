@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import defaultStyles from '../config/styles';
 import Task from '../components/Task';
 
 import { TasksContext } from '../contexts/TasksContext';
@@ -75,7 +76,11 @@ export default function Main() {
         />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addButtonWrapper}>
-            <MaterialCommunityIcons name='plus' size={40} color='#683BB7' />
+            <MaterialCommunityIcons
+              name='plus'
+              size={40}
+              color={defaultStyles.add}
+            />
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -86,19 +91,19 @@ export default function Main() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEAED',
+    backgroundColor: defaultStyles.background,
   },
   addButtonWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: defaultStyles.white,
     borderRadius: 30,
     width: 60,
     height: 60,
   },
   input: {
-    backgroundColor: '#fff',
-    borderColor: '#C0C0C0',
+    backgroundColor: defaultStyles.white,
+    borderColor: defaultStyles.border,
     borderRadius: 60,
     borderWidth: 1,
     paddingHorizontal: 15,
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontSize: 24,
+    fontSize: defaultStyles.titleFontSize,
     fontWeight: 'bold',
   },
   tasks: {

@@ -8,9 +8,8 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import Icon from './Icon';
+import IconOutline from './IconOutline';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
@@ -65,7 +64,7 @@ export default function Task({ item }) {
             {isCompleted ? (
               <Icon name='check' backgroundColor='#683BB7' />
             ) : (
-              <FontAwesome name='circle-thin' size={34} color='#683BB7' />
+              <IconOutline size={30} iconColor='#683BB7' />
             )}
           </TouchableOpacity>
           <Text style={styles.itemText}>{task}</Text>
@@ -80,8 +79,7 @@ export default function Task({ item }) {
             <View style={{ position: 'absolute' }}>
               <Icon name='trash-can-outline' iconColor='red' />
             </View>
-
-            <FontAwesome name='circle-thin' size={36} color='red' />
+            <IconOutline iconColor='red' />
           </TouchableOpacity>
 
           {!isCompleted && (
@@ -94,7 +92,7 @@ export default function Task({ item }) {
               <View style={{ position: 'absolute' }}>
                 <Icon name='pencil-outline' iconColor='blue' />
               </View>
-              <FontAwesome name='circle-thin' size={36} color='blue' />
+              <IconOutline iconColor='blue' />
             </TouchableOpacity>
           )}
         </View>

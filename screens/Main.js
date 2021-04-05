@@ -21,9 +21,6 @@ export default function Main() {
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
-  //const [taskList, setTaskList] = useState([]);
-  //const [isEditing, setIsEditing] = useState(false);
-
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -67,7 +64,7 @@ export default function Main() {
       {/* ADD TASK */}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.rightTaskWrapper}
+        style={styles.addTaskWrapper}
       >
         <TextInput
           style={styles.input}
@@ -77,7 +74,7 @@ export default function Main() {
           onChangeText={(text) => setInputTask(text)}
         />
         <TouchableOpacity onPress={() => handleAddTask()}>
-          <View style={styles.addWrapper}>
+          <View style={styles.addButtonWrapper}>
             <MaterialCommunityIcons name='plus' size={40} color='#683BB7' />
           </View>
         </TouchableOpacity>
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EBEAED',
   },
-  addWrapper: {
+  addButtonWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
@@ -107,8 +104,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 15,
     width: 250,
+    fontSize: 18,
   },
-  rightTaskWrapper: {
+  addTaskWrapper: {
     position: 'absolute',
     bottom: 60,
     flexDirection: 'row',

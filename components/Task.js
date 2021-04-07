@@ -18,7 +18,6 @@ const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 export default function Task({ item }) {
   const { _id, isCompleted, task } = item;
-  // console.log('item', item);
 
   const { editItem, setEditItem } = useContext(EditContext);
   const { taskList, setTaskList } = useContext(TasksContext);
@@ -37,21 +36,19 @@ export default function Task({ item }) {
   // change task incl addl funcs inline (below)
   const handleUpdate = async (taskId, updatedInfo) => {
     try {
-      if (updatedInfo.task) {
-        const { data } = await axios.patch(
-          `${BASE_URL}/todos/${_id}`,
-          updatedInfo
-        );
-        // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
-        const updatedTodos = taskList.map((el) => {
-          if (el._id === _id) {
-            return data;
-          } else {
-            return el;
-          }
-        });
-        setTaskList(updatedTodos);
-      }
+      const { data } = await axios.patch(
+        `${BASE_URL}/todos/${taskId}`,
+        updatedInfo
+      );
+      // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
+      const updatedTodos = taskList.map((el) => {
+        if (el._id === taskId) {
+          return data;
+        } else {
+          return el;
+        }
+      });
+      setTaskList(updatedTodos);
       setEditItem('');
     } catch (err) {
       console.log(`Error: task not changed. ${err.message}`);

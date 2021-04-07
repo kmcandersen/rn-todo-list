@@ -24,7 +24,7 @@ const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 export default function Main() {
   const { editItem, setEditItem } = useContext(EditContext);
-  const { showAll, setShowAll } = useContext(ShowContext);
+  const { showAll } = useContext(ShowContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
@@ -89,6 +89,7 @@ export default function Main() {
           value={inputTask}
           onChangeText={(text) => setInputTask(text)}
           onFocus={() => setEditItem('')}
+          maxLength={2}
         />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addButtonWrapper}>

@@ -7,7 +7,7 @@ import { ShowContext } from '../contexts/ShowContext';
 
 function Header() {
   const { taskList, setTaskList } = useContext(TasksContext);
-  const { showAll, setShowAll } = useContext(ShowContext);
+  const { showAll, sortList } = useContext(ShowContext);
 
   const calcActiveTasks = (taskList) =>
     taskList.filter((el) => !el.isCompleted);
@@ -44,7 +44,7 @@ function Header() {
             <View>
               <TouchableOpacity
                 style={styles.toggleCompletedWrapper}
-                onPress={() => setShowAll(!showAll)}
+                onPress={() => sortList(taskList)}
               >
                 <View>
                   {!showAll ? (

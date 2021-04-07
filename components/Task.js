@@ -35,23 +35,40 @@ export default function Task({ item }) {
   // toggle isCompleted, change task
   // change task incl addl funcs inline (below)
   const handleUpdate = async (taskId, updatedInfo) => {
-    try {
-      const { data } = await axios.patch(
-        `${BASE_URL}/todos/${taskId}`,
-        updatedInfo
-      );
-      // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
-      const updatedTodos = taskList.map((el) => {
-        if (el._id === taskId) {
-          return data;
-        } else {
-          return el;
-        }
-      });
-      setTaskList(updatedTodos);
-      setEditItem('');
-    } catch (err) {
-      console.log(`Error: task not changed. ${err.message}`);
+    // console.log('updatedInfo', updatedInfo);
+    // console.log('isCompleted', isCompleted);
+    const isUpdated = () => {
+      let result = true;
+      'task' in updatedInfo &&
+        (updatedInfo.task === '' || updatedInfo.task === task
+          ? (result = false)
+          : null);
+      'isCompleted' in updatedInfo &&
+        (updatedInfo.isCompleted === isCompleted ? (result = false) : null);
+      return result;
+    };
+    const updateMade = isUpdated();
+
+    if (updateMade) {
+      console.log('update task!');
+      try {
+        const { data } = await axios.patch(
+          `${BASE_URL}/todos/${taskId}`,
+          updatedInfo
+        );
+        // map thru state; if id matches updated task, return it. Else return unchanged task. Replace existing task list with updated list.
+        const updatedTodos = taskList.map((el) => {
+          if (el._id === taskId) {
+            return data;
+          } else {
+            return el;
+          }
+        });
+        setTaskList(updatedTodos);
+        setEditItem('');
+      } catch (err) {
+        console.log(`Error: task not changed. ${err.message}`);
+      }
     }
   };
 

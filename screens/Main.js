@@ -143,11 +143,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   tasks: {
-    marginTop: 30,
+    marginTop: 10,
   },
   tasksWrapper: {
     paddingTop: 80,
-    paddingBottom: 150,
+    paddingBottom: 100,
     paddingHorizontal: 20,
+    flex: 1,
   },
 });

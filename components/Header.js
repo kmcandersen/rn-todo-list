@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     // borderWidth: 1,
     // borderColor: 'red',
-    top: -8,
+    top: -12,
     marginBottom: 10,
   },
   subTitle: {

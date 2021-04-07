@@ -18,6 +18,7 @@ const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 export default function Task({ item }) {
   const { _id, isCompleted, task } = item;
+  // console.log('item', item);
 
   const { editItem, setEditItem } = useContext(EditContext);
   const { taskList, setTaskList } = useContext(TasksContext);

@@ -1,14 +1,17 @@
 import React from 'react';
-import { TasksProvider } from './contexts/TasksContext';
 import { EditProvider } from './contexts/EditContext';
+import { ShowProvider } from './contexts/ShowContext';
+import { TasksProvider } from './contexts/TasksContext';
 import Main from './screens/Main';
 
 function App() {
   return (
     <EditProvider>
-      <TasksProvider>
-        <Main />
-      </TasksProvider>
+      <ShowProvider>
+        <TasksProvider>
+          <Main />
+        </TasksProvider>
+      </ShowProvider>
     </EditProvider>
   );
 }

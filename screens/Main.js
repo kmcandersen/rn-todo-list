@@ -13,15 +13,18 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import defaultStyles from '../config/styles';
+import Header from '../components/Header';
 import Task from '../components/Task';
 
 import { EditContext } from '../contexts/EditContext';
+import { ShowContext } from '../contexts/ShowContext';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 export default function Main() {
   const { editItem, setEditItem } = useContext(EditContext);
+  const { showAll, setShowAll } = useContext(ShowContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
@@ -54,19 +57,24 @@ export default function Main() {
     }
   };
 
+  const calcActiveTasks = (taskList) =>
+    taskList.filter((el) => !el.isCompleted);
+
+  // won't run until tasks fetched from db
+  const activeTasks = taskList.length && calcActiveTasks(taskList);
+
   return (
     <View style={styles.container}>
       <View style={styles.tasksWrapper}>
+        <Header />
         <ScrollView>
-          <Text style={styles.title}>To-Done List</Text>
           {/* LIST OF TASKS */}
-          {taskList.length && (
-            <View style={styles.tasks}>
-              {taskList.map((item) => (
-                <Task item={item} key={item._id} />
-              ))}
-            </View>
-          )}
+          <View style={styles.tasks}>
+            {taskList.length &&
+              (!showAll
+                ? activeTasks.map((item) => <Task item={item} key={item._id} />)
+                : taskList.map((item) => <Task item={item} key={item._id} />))}
+          </View>
         </ScrollView>
       </View>
       {/* ADD TASK */}
@@ -130,21 +138,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 60,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    // justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
-  },
-  title: {
-    fontSize: defaultStyles.titleFontSize,
-    fontWeight: 'bold',
   },
   tasks: {
     marginTop: 30,
   },
   tasksWrapper: {
     paddingTop: 80,
-    paddingBottom: 140,
+    paddingBottom: 150,
     paddingHorizontal: 20,
   },
 });

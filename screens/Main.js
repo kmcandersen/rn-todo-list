@@ -44,13 +44,12 @@ export default function Main() {
   const handleAddTask = async () => {
     Keyboard.dismiss();
     try {
-      if (inputTask) {
-        const { data } = await axios.post(`${BASE_URL}/todos`, {
-          task: inputTask,
-        });
-        // add to Context state the new task returned from route
-        setTaskList([...taskList, data]);
-      }
+      const { data } = await axios.post(`${BASE_URL}/todos`, {
+        task: inputTask,
+      });
+      // add to Context state the new task returned from route
+      setTaskList([...taskList, data]);
+      // }
       setInputTask('');
     } catch (err) {
       console.log(`Error: task not added. ${err.message}`);
@@ -89,9 +88,8 @@ export default function Main() {
           value={inputTask}
           onChangeText={(text) => setInputTask(text)}
           onFocus={() => setEditItem('')}
-          maxLength={2}
         />
-        <TouchableOpacity onPress={() => handleAddTask()}>
+        <TouchableOpacity onPress={() => inputTask && handleAddTask()}>
           <View style={styles.addButtonWrapper}>
             <MaterialCommunityIcons
               name='plus'

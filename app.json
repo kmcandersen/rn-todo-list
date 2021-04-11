@@ -3,8 +3,9 @@
     "name": "todone-list",
     "slug": "todone-list",
     "version": "1.0.0",
+    "description": "Full stack to-do list with CRUD functionality. Technologies: React Native, Node/Express, MongoDB",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/check-purple-icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

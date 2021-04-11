@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,6 +11,7 @@ import Icon from './Icon';
 import IconOutline from './IconOutline';
 import defaultStyles from '../config/styles';
 import { EditContext } from '../contexts/EditContext';
+import { ShowAddContext } from '../contexts/ShowAddContext';
 import { TasksContext } from '../contexts/TasksContext';
 
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
@@ -20,6 +20,7 @@ export default function Task({ item }) {
   const { _id, isCompleted, task } = item;
 
   const { editItem, setEditItem } = useContext(EditContext);
+  const { setShowAddItem } = useContext(ShowAddContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
@@ -90,6 +91,7 @@ export default function Task({ item }) {
               onPress={() => {
                 setEditItem('');
                 setEditItem(_id);
+                setShowAddItem(false);
               }}
               style={[styles.alignIcons, { marginLeft: 10 }]}
             >
@@ -105,10 +107,7 @@ export default function Task({ item }) {
   } else {
     return (
       <View style={styles.item}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.contentGroup}
-        >
+        <View style={styles.contentGroup}>
           <TextInput
             style={styles.editInput}
             placeholder={task}
@@ -125,6 +124,7 @@ export default function Task({ item }) {
                 }
                 setInputTask('');
                 setEditItem('');
+                setShowAddItem(true);
               }}
               style={{ marginLeft: 15 }}
             >
@@ -134,7 +134,7 @@ export default function Task({ item }) {
               />
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     );
   }

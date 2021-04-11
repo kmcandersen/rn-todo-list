@@ -1,8 +1,8 @@
 import React, { createContext, useState } from 'react';
 
-export const ShowContext = createContext();
+export const ShowTaskContext = createContext();
 
-export const ShowProvider = (props) => {
+export const ShowTaskProvider = (props) => {
   const [showAll, setShowAll] = useState(true);
   const sortList = (taskList) => {
     setShowAll(!showAll);
@@ -10,8 +10,8 @@ export const ShowProvider = (props) => {
   };
 
   return (
-    <ShowContext.Provider value={{ showAll, sortList }}>
+    <ShowTaskContext.Provider value={{ showAll, sortList }}>
       {props.children}
-    </ShowContext.Provider>
+    </ShowTaskContext.Provider>
   );
 };

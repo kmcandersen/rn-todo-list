@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -17,19 +16,17 @@ import { TasksContext } from '../contexts/TasksContext';
 const BASE_URL = 'https://rn-todo-list.herokuapp.com';
 
 function AddTask() {
-  const { editItem, setEditItem } = useContext(EditContext);
+  const { setEditItem } = useContext(EditContext);
   const { taskList, setTaskList } = useContext(TasksContext);
   const [inputTask, setInputTask] = useState('');
 
   const handleAddTask = async () => {
-    Keyboard.dismiss();
     try {
       const { data } = await axios.post(`${BASE_URL}/todos`, {
         task: inputTask,
       });
       // add to Context state the new task returned from route
       setTaskList([...taskList, data]);
-      // }
       setInputTask('');
     } catch (err) {
       console.log(`Error: task not added. ${err.message}`);
@@ -50,7 +47,11 @@ function AddTask() {
         onFocus={() => setEditItem('')}
         autoCorrect={false}
       />
-      <TouchableOpacity onPress={() => inputTask && handleAddTask()}>
+      <TouchableOpacity
+        onPress={() => {
+          inputTask && handleAddTask();
+        }}
+      >
         <View style={styles.addButtonWrapper}>
           <MaterialCommunityIcons
             name='plus'
@@ -90,11 +91,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     paddingTop: 20,
     paddingHorizontal: 20,
-    position: 'absolute',
-    bottom: 60,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    // so AddTask input rises with keyboard:
+    position: 'absolute',
+    bottom: 60,
   },
 });
 

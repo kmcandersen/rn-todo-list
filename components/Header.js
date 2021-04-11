@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import defaultStyles from '../config/styles';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TasksContext } from '../contexts/TasksContext';
-import { ShowContext } from '../contexts/ShowContext';
+import { ShowTaskContext } from '../contexts/ShowTaskContext';
 
 function Header() {
-  const { taskList, setTaskList } = useContext(TasksContext);
-  const { showAll, sortList } = useContext(ShowContext);
+  const { taskList } = useContext(TasksContext);
+  const { showAll, sortList } = useContext(ShowTaskContext);
 
   const calcActiveTasks = (taskList) =>
     taskList.filter((el) => !el.isCompleted);
@@ -83,8 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    // borderWidth: 1,
-    // borderColor: 'red',
     top: -12,
     marginBottom: 10,
   },
